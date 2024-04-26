@@ -1,0 +1,37 @@
+project_name: myapp
+before:
+  hooks:
+    - go mod tidy
+builds:
+  - id: "app"
+    main: ./cmd/app/main.go
+    binary: app
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w -X main.version={{.Version}}
+archives:
+  - id: "myapp"
+    builds:
+      - "myapp"
+    format: tar.gz
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - none*
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ .Tag }}-next"
+release:
+  github:
+    owner: 0KnowledgeNetwork
+    name: tmp-goreleaser
