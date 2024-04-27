@@ -6,6 +6,8 @@ before:
 
 builds:
   - id: "myapp"
+    env:
+      - CGO_ENABLED=0
     main: ./cmd/myapp/main.go
     binary: myapp
     goos:
@@ -27,11 +29,18 @@ archives:
     builds:
       - "myapp"
     format: tar.gz
+    # this name template makes the OS and Arch compatible with the results of `uname`.
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    # use zip for windows archives
     format_overrides:
       - goos: windows
         format: zip
-    files:
-      - none*
 
 checksum:
   name_template: 'checksums.txt'
@@ -39,7 +48,17 @@ checksum:
 snapshot:
   name_template: "{{ .Tag }}-next"
 
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - Merge pull request
+      - Merge branch
+
 release:
+  draft: true
   github:
     owner: 0KnowledgeNetwork
     name: tmp-goreleaser
