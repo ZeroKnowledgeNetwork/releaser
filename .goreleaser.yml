@@ -135,14 +135,22 @@ builds:
 #     - -trimpath
 #     - -buildmode=exe
 
+
+universal_binaries:
+  - id: myapp-darwin-universal
+    ids:
+      - myapp-darwin-amd64
+      - myapp-darwin-arm64
+    replace: true
+    name_template: myapp
+
 archives:
   - id: release/version
     builds:
       - myapp-linux-amd64
       - myapp-linux-arm64
       - myapp-linux-armhf
-      - myapp-darwin-amd64
-      - myapp-darwin-arm64
+      - myapp-darwin-universal
       - myapp-windows-amd64
 #     - myapp-windows-386
 #     - myapp-windows-arm64
