@@ -4,46 +4,161 @@ before:
   hooks:
     - go mod tidy
 
+env:
+  - CGO_ENABLED=1
+
 builds:
-  - id: "myapp"
-    env:
-      - CGO_ENABLED=0
-    main: ./cmd/myapp/main.go
+  - id: myapp-linux-amd64
     binary: myapp
-    goos:
-      - linux
-      - darwin
-      - windows
+    main: ./cmd/myapp
     goarch:
       - amd64
-      - arm64
-      - arm
-      - '386'
+    goos:
+      - linux
+    env:
+      - CC=x86_64-linux-gnu-gcc
+      - CXX=x86_64-linux-gnu-g++
     flags:
       - -trimpath
     ldflags:
-      - -s -w -X main.version={{.Version}}
+      - -s -w
+      - -X main.version={{.Version}}
+      - -X main.GitCommit={{ .ShortCommit }}
+      - -X main.GitTag={{ .Tag }}
+      - -X main.BuildDate={{ .Timestamp }}
+
+  - id: myapp-linux-arm64
+    binary: myapp
+    main: ./cmd/myapp
+    goarch:
+      - arm64
+    goos:
+      - linux
+    env:
+      - CC=aarch64-linux-gnu-gcc
+      - CXX=aarch64-linux-gnu-g++
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X main.version={{.Version}}
+      - -X main.GitCommit={{ .ShortCommit }}
+      - -X main.GitTag={{ .Tag }}
+      - -X main.BuildDate={{ .Timestamp }}
+
+  - id: myapp-linux-armhf
+    binary: myapp
+    main: ./cmd/myapp
+    goarch:
+      - arm
+    goarm:
+      - 7
+    goos:
+      - linux
+    env:
+      - CC=arm-linux-gnueabihf-gcc
+      - CXX=arm-linux-gnueabihf-g++
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X main.version={{.Version}}
+      - -X main.GitCommit={{ .ShortCommit }}
+      - -X main.GitTag={{ .Tag }}
+      - -X main.BuildDate={{ .Timestamp }}
+
+  - id: myapp-darwin-amd64
+    binary: myapp
+    main: ./cmd/myapp
+    goarch:
+      - amd64
+    goos:
+      - darwin
+    env:
+      - CC=o64-clang
+      - CXX=o64-clang++
+    flags:
+      - -trimpath
+
+  - id: myapp-darwin-arm64
+    binary: myapp
+    main: ./cmd/myapp
+    goarch:
+      - arm64
+    goos:
+      - darwin
+    env:
+      - CC=oa64-clang
+      - CXX=oa64-clang++
+    flags:
+      - -trimpath
+
+  - id: myapp-windows-amd64
+    binary: myapp
+    main: ./cmd/myapp
+    goarch:
+      - amd64
+    goos:
+      - windows
+    env:
+      - CC=x86_64-w64-mingw32-gcc
+      - CXX=x86_64-w64-mingw32-g++
+    flags:
+      - -trimpath
+      - -buildmode=exe
+
+# - id: myapp-windows-386
+#   binary: myapp
+#   main: ./cmd/myapp
+#   goarch:
+#     - 386
+#   goos:
+#     - windows
+#   env:
+#     - CC=/llvm-mingw/bin/i686-w64-mingw32-gcc
+#     - CXX=/llvm-mingw/bin/i686-w64-mingw32-g++
+#   flags:
+#     - -trimpath
+#     - -buildmode=exe
+
+# - id: myapp-windows-arm64
+#   binary: myapp
+#   main: ./cmd/myapp
+#   goarch:
+#     - arm64
+#   goos:
+#     - windows
+#   env:
+#     - CC=/llvm-mingw/bin/aarch64-w64-mingw32-gcc
+#     - CXX=/llvm-mingw/bin/aarch64-w64-mingw32-g++
+#   flags:
+#     - -trimpath
+#     - -buildmode=exe
 
 archives:
-  - id: "myapp"
+  - id: release/version
     builds:
-      - "myapp"
+      - myapp-linux-amd64
+      - myapp-linux-arm64
+      - myapp-linux-armhf
+      - myapp-darwin-amd64
+      - myapp-darwin-arm64
+      - myapp-windows-amd64
+#     - myapp-windows-386
+#     - myapp-windows-arm64
+    name_template: '{{ .ProjectName }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}{{ .Arm }}'
+    wrap_in_directory: false
     format: tar.gz
-    # this name template makes the OS and Arch compatible with the results of `uname`.
-    name_template: >-
-      {{ .ProjectName }}_
-      {{- title .Os }}_
-      {{- if eq .Arch "amd64" }}x86_64
-      {{- else if eq .Arch "386" }}i386
-      {{- else }}{{ .Arch }}{{ end }}
-      {{- if .Arm }}v{{ .Arm }}{{ end }}
-    # use zip for windows archives
     format_overrides:
       - goos: windows
         format: zip
+    files:
+      # - LICENSE
+      - README.md
 
 checksum:
   name_template: '{{ .ProjectName }}_checksums.txt'
+  algorithm: sha256
 
 snapshot:
   name_template: "{{ .Tag }}-next"
@@ -62,3 +177,4 @@ release:
   github:
     owner: 0KnowledgeNetwork
     name: tmp-goreleaser
+  name_template: '{{ .Tag }}'
