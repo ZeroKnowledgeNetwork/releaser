@@ -1,5 +1,12 @@
 project_name: myapp
 
+release:
+  # draft: true
+  github:
+    owner: 0KnowledgeNetwork
+    name: tmp-goreleaser
+  name_template: '{{ .Tag }}'
+
 before:
   hooks:
     - go mod tidy
@@ -135,7 +142,6 @@ builds:
 #     - -trimpath
 #     - -buildmode=exe
 
-
 universal_binaries:
   - id: myapp-darwin-universal
     ids:
@@ -154,7 +160,15 @@ archives:
       - myapp-windows-amd64
 #     - myapp-windows-386
 #     - myapp-windows-arm64
-    name_template: '{{ .ProjectName }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}{{ .Arm }}'
+    name_template: >-
+      {{ .ProjectName }}-
+      {{- .Tag }}-
+      {{- if eq .Os "darwin" }}MacOS
+      {{- else }}{{- title .Os }}{{ end }}-
+      {{- if eq .Arch "amd64" }}x64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
     wrap_in_directory: false
     format: tar.gz
     format_overrides:
@@ -165,7 +179,7 @@ archives:
       - README.md
 
 checksum:
-  name_template: '{{ .ProjectName }}_checksums.txt'
+  name_template: '{{ .ProjectName }}_{{ .Tag }}_checksums.txt'
   algorithm: sha256
 
 snapshot:
@@ -179,10 +193,3 @@ changelog:
       - '^test:'
       - Merge pull request
       - Merge branch
-
-release:
-  # draft: true
-  github:
-    owner: 0KnowledgeNetwork
-    name: tmp-goreleaser
-  name_template: '{{ .Tag }}'
