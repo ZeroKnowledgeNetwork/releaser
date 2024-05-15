@@ -1,10 +1,15 @@
-# tmp-goreleaser
+# tmp-goreleaser-cross
 
-temporary project to explore automated cross-platform go builds + release
+Exploratory project for automated cross-platform cgo-enabled go builds + release.
 
 Local testing:
 
 ```sh
-go install github.com/goreleaser/goreleaser@latest
-goreleaser --clean --snapshot --skip=publish
+make goreleaser-dry-run
+```
+
+Refer to `Makefile` for platform-specific targets:
+
+```sh
+make <platform-identifier>
 ```
