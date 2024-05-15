@@ -15,7 +15,7 @@ env:
   - CGO_ENABLED=1
 
 builds:
-  - id: myapp-linux-amd64
+  - id: linux-amd64
     binary: walletshield
     main: ./apps/walletshield
     goarch:
@@ -34,7 +34,7 @@ builds:
       - -X main.GitTag={{ .Tag }}
       - -X main.BuildDate={{ .Timestamp }}
 
-  - id: myapp-linux-arm64
+  - id: linux-arm64
     binary: walletshield
     main: ./apps/walletshield
     goarch:
@@ -53,7 +53,7 @@ builds:
       - -X main.GitTag={{ .Tag }}
       - -X main.BuildDate={{ .Timestamp }}
 
-  - id: myapp-linux-armhf
+  - id: linux-armhf
     binary: walletshield
     main: ./apps/walletshield
     goarch:
@@ -74,7 +74,7 @@ builds:
       - -X main.GitTag={{ .Tag }}
       - -X main.BuildDate={{ .Timestamp }}
 
-  - id: myapp-darwin-amd64
+  - id: darwin-amd64
     binary: walletshield
     main: ./apps/walletshield
     goarch:
@@ -87,7 +87,7 @@ builds:
     flags:
       - -trimpath
 
-  - id: myapp-darwin-arm64
+  - id: darwin-arm64
     binary: walletshield
     main: ./apps/walletshield
     goarch:
@@ -99,8 +99,10 @@ builds:
       - CXX=oa64-clang++
     flags:
       - -trimpath
+    ldflags:
+      - -v # verbose is useful
 
-  - id: myapp-windows-amd64
+  - id: windows-amd64
     binary: walletshield
     main: ./apps/walletshield
     goarch:
@@ -114,7 +116,7 @@ builds:
       - -trimpath
       - -buildmode=exe
 
-# - id: myapp-windows-386
+# - id: windows-386
 #   binary: walletshield
 #   main: ./apps/walletshield
 #   goarch:
@@ -128,7 +130,7 @@ builds:
 #     - -trimpath
 #     - -buildmode=exe
 
-# - id: myapp-windows-arm64
+# - id: windows-arm64
 #   binary: walletshield
 #   main: ./apps/walletshield
 #   goarch:
@@ -143,23 +145,23 @@ builds:
 #     - -buildmode=exe
 
 universal_binaries:
-  - id: myapp-darwin-universal
+  - id: darwin-universal
     ids:
-      - myapp-darwin-amd64
-      - myapp-darwin-arm64
+      - darwin-amd64
+      - darwin-arm64
     replace: true
     name_template: walletshield
 
 archives:
   - id: release/version
     builds:
-      - myapp-linux-amd64
-      - myapp-linux-arm64
-      - myapp-linux-armhf
-      - myapp-darwin-universal
-      - myapp-windows-amd64
-#     - myapp-windows-386
-#     - myapp-windows-arm64
+      - linux-amd64
+      - linux-arm64
+      - linux-armhf
+      - darwin-universal
+      - windows-amd64
+#     - windows-386
+#     - windows-arm64
     name_template: >-
       {{ .ProjectName }}-
       {{- .Tag }}-
