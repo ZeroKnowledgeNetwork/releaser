@@ -15,13 +15,13 @@ env:
   - CGO_ENABLED=1
 
 # https://goreleaser.com/customization/verifiable_builds/
-gomod:
-  proxy: true
-  mod: mod
-  env:
-    - GOPROXY=https://proxy.golang.org,direct
-    - GOSUMDB=sum.golang.org
-    # - GOPRIVATE=example.com/blah
+# gomod:
+#   proxy: true
+#   mod: mod
+#   env:
+#     - GOPROXY=https://proxy.golang.org,direct
+#     - GOSUMDB=sum.golang.org
+#     # - GOPRIVATE=example.com/blah
 
 builds:
   - id: linux-amd64
