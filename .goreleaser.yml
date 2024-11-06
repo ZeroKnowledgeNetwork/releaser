@@ -5,7 +5,7 @@ release:
   github:
     owner: 0KnowledgeNetwork
     name: tmp-goreleaser
-  name_template: '{{ .Tag }}'
+  name_template: "{{ .Tag }}"
 
 before:
   hooks:
@@ -53,26 +53,26 @@ builds:
       - -X main.GitTag={{ .Tag }}
       - -X main.BuildDate={{ .Timestamp }}
 
-# - id: linux-armhf
-#   binary: walletshield
-#   main: ./apps/walletshield
-#   goarch:
-#     - arm
-#   goarm:
-#     - 7
-#   goos:
-#     - linux
-#   env:
-#     - CC=arm-linux-gnueabihf-gcc
-#     - CXX=arm-linux-gnueabihf-g++
-#   flags:
-#     - -trimpath
-#   ldflags:
-#     - -s -w
-#     - -X main.version={{.Version}}
-#     - -X main.GitCommit={{ .ShortCommit }}
-#     - -X main.GitTag={{ .Tag }}
-#     - -X main.BuildDate={{ .Timestamp }}
+  # - id: linux-armhf
+  #   binary: walletshield
+  #   main: ./apps/walletshield
+  #   goarch:
+  #     - arm
+  #   goarm:
+  #     - 7
+  #   goos:
+  #     - linux
+  #   env:
+  #     - CC=arm-linux-gnueabihf-gcc
+  #     - CXX=arm-linux-gnueabihf-g++
+  #   flags:
+  #     - -trimpath
+  #   ldflags:
+  #     - -s -w
+  #     - -X main.version={{.Version}}
+  #     - -X main.GitCommit={{ .ShortCommit }}
+  #     - -X main.GitTag={{ .Tag }}
+  #     - -X main.BuildDate={{ .Timestamp }}
 
   - id: darwin-amd64
     binary: walletshield
@@ -157,11 +157,11 @@ archives:
     builds:
       - linux-amd64
       - linux-arm64
-#     - linux-armhf
       - darwin-universal
-#     - windows-amd64
-#     - windows-386
-#     - windows-arm64
+      # - linux-armhf
+      # - windows-amd64
+      # - windows-386
+      # - windows-arm64
     name_template: >-
       {{ .ProjectName }}-
       {{- .Tag }}-
@@ -181,7 +181,7 @@ archives:
       - README.md
 
 checksum:
-  name_template: '{{ .ProjectName }}_{{ .Tag }}_checksums.txt'
+  name_template: "{{ .ProjectName }}_{{ .Tag }}_checksums.txt"
   algorithm: sha256
 
 snapshot:
