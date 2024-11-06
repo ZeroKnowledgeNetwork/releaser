@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 env:
-  GORELEASER_VERSION: v1.22.2
+  GORELEASER_VERSION: v1.22.3
 
 jobs:
   goreleaser:

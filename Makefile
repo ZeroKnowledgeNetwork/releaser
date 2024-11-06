@@ -1,4 +1,4 @@
-GORELEASER_IMAGE := ghcr.io/goreleaser/goreleaser-cross:v1.22.2
+GORELEASER_IMAGE := ghcr.io/goreleaser/goreleaser-cross:v1.22.3
 
 IDS := \
 	linux-amd64 \
