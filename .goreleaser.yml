@@ -1,7 +1,7 @@
 project_name: walletshield
 
 release:
-  # draft: true
+  draft: true
   github:
     owner: 0KnowledgeNetwork
     name: tmp-goreleaser
