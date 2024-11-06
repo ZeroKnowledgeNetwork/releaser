@@ -53,26 +53,26 @@ builds:
       - -X main.GitTag={{ .Tag }}
       - -X main.BuildDate={{ .Timestamp }}
 
-  - id: linux-armhf
-    binary: walletshield
-    main: ./apps/walletshield
-    goarch:
-      - arm
-    goarm:
-      - 7
-    goos:
-      - linux
-    env:
-      - CC=arm-linux-gnueabihf-gcc
-      - CXX=arm-linux-gnueabihf-g++
-    flags:
-      - -trimpath
-    ldflags:
-      - -s -w
-      - -X main.version={{.Version}}
-      - -X main.GitCommit={{ .ShortCommit }}
-      - -X main.GitTag={{ .Tag }}
-      - -X main.BuildDate={{ .Timestamp }}
+# - id: linux-armhf
+#   binary: walletshield
+#   main: ./apps/walletshield
+#   goarch:
+#     - arm
+#   goarm:
+#     - 7
+#   goos:
+#     - linux
+#   env:
+#     - CC=arm-linux-gnueabihf-gcc
+#     - CXX=arm-linux-gnueabihf-g++
+#   flags:
+#     - -trimpath
+#   ldflags:
+#     - -s -w
+#     - -X main.version={{.Version}}
+#     - -X main.GitCommit={{ .ShortCommit }}
+#     - -X main.GitTag={{ .Tag }}
+#     - -X main.BuildDate={{ .Timestamp }}
 
   - id: darwin-amd64
     binary: walletshield
@@ -102,19 +102,19 @@ builds:
     ldflags:
       - -v # verbose is useful
 
-  - id: windows-amd64
-    binary: walletshield
-    main: ./apps/walletshield
-    goarch:
-      - amd64
-    goos:
-      - windows
-    env:
-      - CC=x86_64-w64-mingw32-gcc
-      - CXX=x86_64-w64-mingw32-g++
-    flags:
-      - -trimpath
-      - -buildmode=exe
+# - id: windows-amd64
+#   binary: walletshield
+#   main: ./apps/walletshield
+#   goarch:
+#     - amd64
+#   goos:
+#     - windows
+#   env:
+#     - CC=x86_64-w64-mingw32-gcc
+#     - CXX=x86_64-w64-mingw32-g++
+#   flags:
+#     - -trimpath
+#     - -buildmode=exe
 
 # - id: windows-386
 #   binary: walletshield
@@ -157,9 +157,9 @@ archives:
     builds:
       - linux-amd64
       - linux-arm64
-      - linux-armhf
+#     - linux-armhf
       - darwin-universal
-      - windows-amd64
+#     - windows-amd64
 #     - windows-386
 #     - windows-arm64
     name_template: >-
