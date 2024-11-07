@@ -10,6 +10,7 @@ permissions:
 
 env:
   GORELEASER_VERSION: v1.22.3
+  UPX_VERSION: 4.2.4
 
 jobs:
   goreleaser:
@@ -17,6 +18,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Install UPX
+        run: |
+          F="upx-${UPX_VERSION}-amd64_linux"
+          curl -OL "https://github.com/upx/upx/releases/download/v${UPX_VERSION}/${F}.tar.xz"
+          tar xf "${F}.tar.xz"
+          mv "${F}/upx" /usr/local/bin/
+          upx --version
 
       - name: Unshallow repo
         run: git fetch --prune --unshallow --tags -f
