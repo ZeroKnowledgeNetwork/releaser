@@ -153,6 +153,15 @@ builds:
 #     - -trimpath
 #     - -buildmode=exe
 
+upx:
+  -
+    enabled: true
+    goos: [linux, darwin]
+    goarch: [arm64, amd64]
+    compress: best
+    lzma: true
+    brute: true
+
 universal_binaries:
   - id: darwin-universal
     ids:
