@@ -190,7 +190,7 @@ archives:
       {{- else }}{{ .Arch }}{{ end }}
       {{- if .Arm }}v{{ .Arm }}{{ end }}
     wrap_in_directory: false
-    format: tar.gz
+    format: tar.xz
     format_overrides:
       - goos: windows
         format: zip
