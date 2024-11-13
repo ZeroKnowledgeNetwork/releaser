@@ -111,19 +111,20 @@ builds:
     ldflags:
       - -v # verbose is useful
 
-# - id: windows-amd64
-#   binary: walletshield
-#   main: ./apps/walletshield
-#   goarch:
-#     - amd64
-#   goos:
-#     - windows
-#   env:
-#     - CC=x86_64-w64-mingw32-gcc
-#     - CXX=x86_64-w64-mingw32-g++
-#   flags:
-#     - -trimpath
-#     - -buildmode=exe
+  - id: windows-amd64
+    binary: walletshield
+    main: ./apps/walletshield
+    goarch:
+      - amd64
+    goos:
+      - windows
+    env:
+      - CC=x86_64-w64-mingw32-gcc
+      - CXX=x86_64-w64-mingw32-g++
+      - CGO_LDFLAGS="-Wl,--allow-multiple-definition"
+    flags:
+      - -trimpath
+      - -buildmode=exe
 
 # - id: windows-386
 #   binary: walletshield
@@ -154,9 +155,8 @@ builds:
 #     - -buildmode=exe
 
 upx:
-  -
-    enabled: true
-    goos: [linux, darwin]
+  - enabled: true
+    goos: [linux, darwin, windows]
     goarch: [arm64, amd64]
     compress: best
     lzma: true
@@ -176,8 +176,8 @@ archives:
       - linux-amd64
       - linux-arm64
       - darwin-universal
+      - windows-amd64
       # - linux-armhf
-      # - windows-amd64
       # - windows-386
       # - windows-arm64
     name_template: >-
