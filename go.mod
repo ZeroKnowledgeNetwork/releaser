@@ -1,4 +1,4 @@
-module tmp-goreleaser
+module releaser
 
 go 1.23.0
 

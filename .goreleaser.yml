@@ -3,8 +3,8 @@ project_name: walletshield
 release:
   draft: true
   github:
-    owner: 0KnowledgeNetwork
-    name: tmp-goreleaser
+    owner: ZeroKnowledgeNetwork
+    name: releaser
   name_template: "{{ .Tag }}"
 
 before:

@@ -1,4 +1,4 @@
-# tmp-goreleaser-cross
+# goreleaser-cross
 
 Exploratory project for automated cross-platform cgo-enabled go builds + release.
 
